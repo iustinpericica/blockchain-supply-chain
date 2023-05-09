@@ -1,3 +1,5 @@
+pragma solidity ^0.8.19;
+
 // Declare a contract for managing roles
 contract RoleManager {
     // Declare a struct for storing a role
@@ -18,6 +20,10 @@ contract RoleManager {
         string indexed roleName,
         address indexed member
     );
+
+    constructor() public {
+        // Create a role for the contract owner
+    }
 
     // Add a member to a role
     function addMember(string memory roleName, address member) public {
