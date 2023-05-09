@@ -21,6 +21,12 @@ contract RoleManager {
 
     // Add a member to a role
     function addMember(string memory roleName, address member) public {
+        // Only member of the role group can add a member to that group
+        require(hasRole(roleName, msg.sender), "Sender is not authorized");
+        _addMember(roleName, member);
+    }
+
+    function _addMember(string memory roleName, address member) internal {
         Role storage role = roles[roleName];
         require(role.exists, "Role does not exist");
 
@@ -54,6 +60,9 @@ contract RoleManager {
         require(!role.exists, "Role already exists");
 
         role.exists = true;
+
+        // who created the role is the first member
+        _addMember(roleName, msg.sender);
         emit RoleAdded(roleName);
     }
 
