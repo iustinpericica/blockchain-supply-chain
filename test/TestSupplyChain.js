@@ -45,17 +45,19 @@ contract('SupplyChain', function(accounts) {
         truffleAssert.eventEmitted(txCreateItem, 'ItemCreated');
     });
 
-    if("should buy item as transit: verify transfer of ownership & balance", async () => {
+    it("should buy item as transit: verify transfer of ownership & balance", async () => {
         var txCreateItem = await supplyChain.createItem(12345, 50, "Elmaro");
-        let buyerBalanceBeforePurchase = await web3.eth.getBalance(accounts[1]);
+        const newItemId = 4;
+        const buyerAccount = accounts[3];
+        let buyerBalanceBeforePurchase = await web3.eth.getBalance(buyerAccount);
 
-        var txBuyItem = await supplyChain.buyItem(3, "distributor", {from: accounts[1]});
-        let buyerBalanceAfterPurchase = await web3.eth.getBalance(accounts[1]);
+        var txBuyItem = await supplyChain.buyTransit(newItemId, {from: buyerAccount});
+        let buyerBalanceAfterPurchase = await web3.eth.getBalance(buyerAccount);
         
-        var item = await supplyChain.getItem(3);
-        assert(item[3], accounts[1]);
+        var item = await supplyChain.getItem(newItemId);
+        assert(item[3], buyerAccount);
         assert(buyerBalanceBeforePurchase - item[5], buyerBalanceAfterPurchase);
-        truffleAssert.eventEmitted(txBuyItem, 'ItemBought');
+        truffleAssert.eventEmitted(txBuyItem, 'Transit');
     });
 
 });

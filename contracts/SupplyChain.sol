@@ -79,7 +79,7 @@ contract SupplyChain is RoleManager {
         createRole("customer");
     }
 
-    // Define a function 'createItem' that allows a creator to mark an item 'Created'
+    // allows a creator to mark an item 'Created'
     function createItem(
         uint _ean,
         uint productPrice,
